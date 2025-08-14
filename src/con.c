@@ -410,6 +410,7 @@ bool con_is_split(Con *con) {
 bool con_is_hidden(Con *con) {
     Con *current = con;
 
+    DLOG("SeerLite: is_hidden: focused = %p (%s), con = %p (%s)\n", focused, focused->name, con, con->name);
     if (
         current != focused &&
         con_get_output(current) != NULL &&
@@ -542,9 +543,17 @@ bool con_accepts_window(Con *con) {
  *
  */
 Con *con_get_output(Con *con) {
+    DLOG("SeerLite: get_output: Getting output for %p\n", con);
     Con *result = con;
     while (result != NULL && result->type != CT_OUTPUT) {
+        DLOG("SeerLite: get_output: %p is type %d\n", result, result->type);
         result = result->parent;
+        DLOG("SeerLite: get_output: %p is next parent\n", result);
+    }
+    if (result == NULL) {
+        DLOG("SeerLite: get_output: %p is NULL\n", result);
+    } else {
+        DLOG("SeerLite: get_output: %p is type %d so we finish\n", result, result->type);
     }
     /* We must be able to get an output because focus can never be set higher
      * in the tree (root node cannot be focused). */
