@@ -412,6 +412,8 @@ bool con_is_hidden(Con *con) {
 
     if (
         current != focused &&
+        con_get_output(current) != NULL &&
+        con_get_output(focused) != NULL &&
         con_get_output(current) == con_get_output(focused) && (
             con_get_workspace(current) != con_get_workspace(focused) ||
             focused->fullscreen_mode != CF_NONE
@@ -546,7 +548,6 @@ Con *con_get_output(Con *con) {
     }
     /* We must be able to get an output because focus can never be set higher
      * in the tree (root node cannot be focused). */
-    assert(result != NULL);
     return result;
 }
 
