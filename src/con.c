@@ -410,9 +410,16 @@ bool con_is_split(Con *con) {
 bool con_is_hidden(Con *con) {
     Con *current = con;
 
-    if (con_get_workspace(con) != con_get_workspace(focused)) {
+    if (
+        current != focused &&
+        con_get_output(current) == con_get_output(focused) && (
+            con_get_workspace(current) != con_get_workspace(focused) ||
+            focused->fullscreen_mode != CF_NONE
+        )
+    ) {
         return true;
     }
+
     /* ascend to the workspace level and memorize the highest-up container
      * which is stacked or tabbed. */
     while (current != NULL && current->type != CT_WORKSPACE) {
